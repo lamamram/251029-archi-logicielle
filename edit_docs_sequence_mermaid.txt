@@ -1,13 +1,41 @@
 sequenceDiagram
     actor martin
     participant Auth
-    participant HomeCtrller
-    participant PresController
+    participant HomeCtrl
+    participant PresCtrl
     participant Signature
-    participant Pres
+
     martin->>Auth: auth(usr, pwd)
-    par logged == true
+    activate Auth
+    alt logged == true
         Auth-->>Auth: redirect(/)
-    and logged == false
+    else logged == false
+        deactivate Auth
         Auth--x martin: logged
     end
+    martin->>HomeCtrl: GET /presence
+    activate martin
+    activate HomeCtrl
+    HomeCtrl-->>martin: render(presences)
+    deactivate HomeCtrl
+    activate martin
+
+    martin->>PresCtrl: PresCtrl::req_sign()
+    activate martin
+    activate PresCtrl
+    PresCtrl->>Signature: Signature::create_sign()
+    activate Signature
+    Signature-->>PresCtrl: created
+    deactivate Signature
+    deactivate PresCtrl
+    PresCtrl-->>martin: render(presences_with_sign)
+    deactivate martin
+
+    loop session in sessions
+        martin->>PresCtrl: PresCtrl::sign(session)
+        activate martin
+        activate PresCtrl
+        PresCtrl-->>martin: render(presences_edited)
+        deactivate martin
+        deactivate PresCtrl
+    end    
