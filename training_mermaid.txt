@@ -1,0 +1,40 @@
+classDiagram
+    %% generalization / extensions
+    AbstractTraining <|-- Training
+    %% implmentation: interfaces
+    Training --() Activable
+    %% aggregation
+    Training "1..*" o-- "0..1" Certification : provides
+    class AbstractTraining {
+        <<abstract>>
+        -int id
+        -String title
+        -String description
+        -Date startDate
+        -Date endDate
+        +Collection<Date> getDates()
+        +String getLocation()
+        +String getTitle()
+        +void setTitle(String title)
+    }
+    class Training {
+        -int id
+        -String title
+        -String description
+        -Date startDate
+        -Date endDate
+        -String location
+        +Collection<Date> getDates()
+        +String getLocation()
+        +String getTitle()
+        +void setTitle(String title)
+    }
+    class Activable{
+      <<interface>>
+      +void activate()
+      +void deactivate()
+    }
+    class Certification {
+        -int id
+        -String name
+    }
