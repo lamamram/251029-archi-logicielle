@@ -1,0 +1,13 @@
+sequenceDiagram
+    actor martin
+    participant Auth
+    participant HomeCtrller
+    participant PresController
+    participant Signature
+    participant Pres
+    martin->>Auth: auth(usr, pwd)
+    par logged == true
+        Auth-->>Auth: redirect(/)
+    and logged == false
+        Auth--x martin: logged
+    end
