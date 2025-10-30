@@ -18,7 +18,7 @@ sequenceDiagram
     activate HomeCtrl
     HomeCtrl-->>martin: render(presences)
     deactivate HomeCtrl
-    activate martin
+    deactivate martin
 
     martin->>PresCtrl: PresCtrl::req_sign()
     activate martin
